@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Входи в группу</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0a0f0a;
+font-family:'Poppins',sans-serif;
+color:white
+}
+
+.container{
+text-align:center;
+max-width:500px;
+padding:60px 40px
+}
+
+.title{
+font-family:'Cinzel',serif;
+font-size:42px;
+margin-bottom:15px
+}
+
+.subtitle{
+color:rgba(255,255,255,0.7);
+margin-bottom:40px
+}
+
+.button{
+width:160px;
+height:160px;
+border-radius:50%;
+background:linear-gradient(135deg,#4caf50,#388e3c);
+border:none;
+color:white;
+font-size:16px;
+cursor:pointer
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:15px;
+border-radius:10px;
+border:2px solid rgba(76,175,80,0.3);
+background:rgba(76,175,80,0.08);
+color:white
+}
+
+button.verify{
+margin-top:20px;
+padding:14px 30px;
+border-radius:10px;
+border:none;
+background:#4caf50;
+color:white;
+cursor:pointer
+}
+
+.message{
+margin-top:20px
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="mainScreen">
+
+<h1 class="title">Pray Together</h1>
+<p class="subtitle">Присоединитесь к молитвенной группе</p>
+
+<button class="button" onclick="openForm()">Войти<br>в группу</button>
+
+</div>
+
+<div id="formScreen" style="display:none">
+
+<h1 class="title">Входи в группу</h1>
+
+<input id="userName" placeholder="Введите ваше имя">
+
+<select id="userCountry">
+
+<option value="">Выберите страну</option>
+
+<option value="IL">🇮🇱 Израиль</option>
+<option value="US">🇺🇸 США</option>
+<option value="DE">🇩🇪 Германия</option>
+<option value="GB">🇬🇧 Великобритания</option>
+<option value="FR">🇫🇷 Франция</option>
+<option value="IT">🇮🇹 Италия</option>
+<option value="ES">🇪🇸 Испания</option>
+<option value="RU">🇷🇺 Россия</option>
+
+</select>
+
+<button class="verify" onclick="verifyAccess()">Проверить доступ</button>
+
+<div id="result" class="message"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const RU_GROUP_URL='https://t.me/+iLu4vTE_r_9kYjNi'
+const INTL_GROUP_URL='https://t.me/+HhAJSQSPCPE0ZDI6'
+
+function openForm(){
+document.getElementById('mainScreen').style.display='none'
+document.getElementById('formScreen').style.display='block'
+}
+
+async function verifyAccess(){
+
+const name=document.getElementById('userName').value.trim()
+const country=document.getElementById('userCountry').value
+const result=document.getElementById('result')
+
+if(!name){
+result.innerText='Введите имя'
+return
+}
+
+if(!country){
+result.innerText='Выберите страну'
+return
+}
+
+try{
+
+const response=await fetch('https://ipapi.co/json/')
+const data=await response.json()
+
+if(country==='RU'){
+
+result.innerHTML=`Добро пожаловать ${name}<br><a href="${RU_GROUP_URL}">Войти в группу</a>`
+
+setTimeout(()=>{window.location.href=RU_GROUP_URL},2000)
+
+return
+
+}
+
+if(country!==data.country_code && country!=='IL'){
+
+result.innerText='Ошибка проверки страны'
+return
+
+}
+
+result.innerHTML=`Добро пожаловать ${name}<br><a href="${INTL_GROUP_URL}">Войти в группу</a>`
+
+setTimeout(()=>{window.location.href=INTL_GROUP_URL},2000)
+
+}catch{
+
+result.innerText='Ошибка соединения'
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
