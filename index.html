@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Входи в группу</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a0f0a;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            color: white;
+            position: relative;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(180deg, #0a2a1a 0%, #0d4a28 30%, #0f5a32 60%, #0a3a20 100%);
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 120%;
+            bottom: 0;
+            left: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="rgba(100,200,120,0.3)"/><stop offset="100" stop-color="rgba(76,175,80,0.15)"/></linearGradient></defs><path d="M0,60 Q150,30 300,60 T600,60 T900,60 T1200,60 L1200,120 L0,120 Z" fill="url(%23g)"/><path d="M0,80 Q200,50 400,80 T800,80 T1200,80 L1200,120 L0,120 Z" fill="rgba(76,175,80,0.2)"/></svg>') repeat-x;
+            animation: wave 12s linear infinite;
+            opacity: 0.8;
+        }
+
+        .wave:nth-child(1) {
+            animation-delay: 0s;
+            opacity: 0.6;
+            animation-duration: 15s;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.4;
+            animation-duration: 18s;
+            bottom: 10px;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(76, 175, 80, 0.6);
+            border-radius: 50%;
+            animation: float 20s infinite;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 500px;
+            padding: 60px 40px;
+        }
+
+        .top-text {
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: rgba(76, 175, 80, 0.8);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        #mainScreen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .button-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 60px;
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            animation: expand 3s infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring:nth-child(1) { animation-delay: 0s; }
+        .ring:nth-child(2) { animation-delay: 0.4s; }
+        .ring:nth-child(3) { animation-delay: 0.8s; }
+        .ring:nth-child(4) { animation-delay: 1.2s; }
+        .ring:nth-child(5) { animation-delay: 1.6s; }
+        .ring:nth-child(6) { animation-delay: 2s; }
+
+        @keyframes expand {
+            0% { width: 100%; height: 100%; opacity: 1; border-color: rgba(76,175,80,0.9); transform: translate(-50%,-50%) scale(1); }
+            100% { width: 100%; height: 100%; opacity: 0; border-color: rgba(76,175,80,0); transform: translate(-50%,-50%) scale(2.2); }
+        }
+
+        .button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(76,175,80,0.9) 0%, rgba(56,142,60,0.9) 100%);
+            border: 3px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(76,175,80,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            z-index: 5;
+        }
+
+        .button:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 0 15px 50px rgba(76,175,80,0.6), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .button:active {
+            transform: translate(-50%, -50%) scale(0.92);
+        }
+
+        .button-text {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .cta-text {
+            font-size: 13px;
+            color: rgba(76, 175, 80, 0.8);
+            margin-top: 30px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        #formScreen {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: rgba(76, 175, 80, 0.9);
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 10px;
+            background: rgba(76, 175, 80, 0.08);
+            color: #b7e4c7;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: rgba(76, 175, 80, 0.8);
+            background: rgba(76, 175, 80, 0.12);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(183, 228, 199, 0.5);
+        }
+
+        option {
+            background: #0a2a1a;
+            color: #b7e4c7;
+        }
+
+        .button-wrapper-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 30px;
+            border: 2px solid rgba(76, 175, 80, 0.6);
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(76,175,80,0.9) 0%, rgba(56,142,60,0.9) 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(76,175,80,0.4);
+            border-color: rgba(76,175,80,0.9);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .spinner.show {
+            display: block;
+        }
+
+        .spinner-circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+
+        .spinner-circle::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #4caf50;
+            border-radius: 50%;
+            left: 50%;
+            top: 0;
+            margin-left: -3px;
+        }
+
+        .spinner-circle:nth-child(1) { transform: rotate(0deg); animation: spin 1.2s linear infinite; }
+        .spinner-circle:nth-child(2) { transform: rotate(45deg); animation: spin 1.2s linear infinite 0.15s; }
+        .spinner-circle:nth-child(3) { transform: rotate(90deg); animation: spin 1.2s linear infinite 0.3s; }
+        .spinner-circle:nth-child(4) { transform: rotate(135deg); animation: spin 1.2s linear infinite 0.45s; }
+        .spinner-circle:nth-child(5) { transform: rotate(180deg); animation: spin 1.2s linear infinite 0.6s; }
+        .spinner-circle:nth-child(6) { transform: rotate(225deg); animation: spin 1.2s linear infinite 0.75s; }
+        .spinner-circle:nth-child(7) { transform: rotate(270deg); animation: spin 1.2s linear infinite 0.9s; }
+        .spinner-circle:nth-child(8) { transform: rotate(315deg); animation: spin 1.2s linear infinite 1.05s; }
+
+        @keyframes spin {
+            0% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .message {
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+            font-weight: 600;
+            animation: slideDown 0.4s ease;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #b7e4c7;
+            border-left: 4px solid #4caf50;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #ff8a80;
+            border-left: 4px solid #f44336;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .success-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76,175,80,0.4);
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(76, 175, 80, 0.3) !important;
+            border: 1px solid rgba(76, 175, 80, 0.5) !important;
+            font-size: 13px !important;
+            flex: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+            .title {
+                font-size: 32px;
+            }
+            button {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="particles" id="particlesContainer"></div>
+    </div>
+
+    <div class="container">
+        <!-- ПЕРВЫЙ ЭКРАН: КНОПКА ВХОДА -->
+        <div id="mainScreen">
+            <div class="top-text">Духовное сообщество</div>
+            <h1 class="title">Pray Together</h1>
+            <p class="subtitle">Присоединитесь к молитвенной группе<br>и почувствуйте силу единства</p>
+            
+            <div class="button-wrapper">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <button class="button" onclick="openForm()">
+                    <span class="button-text">Войти<br>в группу</span>
+                </button>
+            </div>
+            
+            <p class="cta-text">Нажмите чтобы продолжить ↓</p>
+        </div>
+
+        <!-- ВТОРОЙ ЭКРАН: ФОРМА -->
+        <div id="formScreen">
+            <div class="top-text">Духовное сообщество</div>
+            <h1 class="title">Входи в группу</h1>
+            <p class="subtitle">Введи свои данные для проверки доступа</p>
+
+            <form id="accessForm">
+                <div class="form-group">
+                    <label for="userName">📝 Ваше имя</label>
+                    <input type="text" id="userName" placeholder="Введите ваше имя" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userCountry">🌍 Выберите вашу страну</label>
+                    <select id="userCountry" required>
+                        <option value="">-- Выберите страну --</option>
+                        <option value="US">🇺🇸 США</option>
+                        <option value="DE">🇩🇪 Германия</option>
+                        <option value="UA">🇺🇦 Украина</option>
+                        <option value="BY">🇧🇾 Беларусь</option>
+                        <option value="KZ">🇰🇿 Казахстан</option>
+                        <option value="CA">🇨🇦 Канада</option>
+                        <option value="GB">🇬🇧 Великобритания</option>
+                        <option value="FR">🇫🇷 Франция</option>
+                        <option value="IT">🇮🇹 Италия</option>
+                        <option value="ES">🇪🇸 Испания</option>
+                        <option value="NL">🇳🇱 Нидерланды</option>
+                        <option value="BE">🇧🇪 Бельгия</option>
+                        <option value="CH">🇨🇭 Швейцария</option>
+                        <option value="AT">🇦🇹 Австрия</option>
+                        <option value="DK">🇩🇰 Дания</option>
+                        <option value="SE">🇸🇪 Швеция</option>
+                        <option value="NO">🇳🇴 Норвегия</option>
+                        <option value="FI">🇫🇮 Финляндия</option>
+                        <option value="PL">🇵🇱 Польша</option>
+                        <option value="CZ">🇨🇿 Чехия</option>
+                        <option value="SK">🇸🇰 Словакия</option>
+                        <option value="HU">🇭🇺 Венгрия</option>
+                        <option value="RO">🇷🇴 Румыния</option>
+                        <option value="BG">🇧🇬 Болгария</option>
+                        <option value="GR">🇬🇷 Греция</option>
+                        <option value="SI">🇸🇮 Словения</option>
+                        <option value="HR">🇭🇷 Хорватия</option>
+                        <option value="LV">🇱🇻 Латвия</option>
+                        <option value="EE">🇪🇪 Эстония</option>
+                        <option value="LT">🇱🇹 Литва</option>
+                        <option value="BA">🇧🇦 Босния и Герцеговина</option>
+                        <option value="RS">🇷🇸 Сербия</option>
+                        <option value="MK">🇲🇰 Македония</option>
+                        <option value="AL">🇦🇱 Албания</option>
+                        <option value="ME">🇲🇪 Черногория</option>
+                        <option value="TR">🇹🇷 Турция</option>
+                        <option value="IE">🇮🇪 Ирландия</option>
+                        <option value="LU">🇱🇺 Люксембург</option>
+                        <option value="MT">🇲🇹 Мальта</option>
+                        <option value="CY">🇨🇾 Кипр</option>
+                        <option value="PT">🇵🇹 Португалия</option>
+                        <option value="IS">🇮🇸 Исландия</option>
+                        <option value="MC">🇲🇨 Монако</option>
+                        <option value="AD">🇦🇩 Андорра</option>
+                        <option value="SM">🇸🇲 Сан-Марино</option>
+                        <option value="LI">🇱🇮 Лихтенштейн</option>
+                        <option value="MD">🇲🇩 Молдова</option>
+                        <option value="JP">🇯🇵 Япония</option>
+                        <option value="CN">🇨🇳 Китай</option>
+                        <option value="KR">🇰🇷 Южная Корея</option>
+                        <option value="IN">🇮🇳 Индия</option>
+                        <option value="BR">🇧🇷 Бразилия</option>
+                        <option value="MX">🇲🇽 Мексика</option>
+                        <option value="AU">🇦🇺 Австралия</option>
+                        <option value="ZA">🇿🇦 ЮАР</option>
+                        <option value="EG">🇪🇬 Египет</option>
+                        <option value="NG">🇳🇬 Нигерия</option>
+                        <option value="ZA">🇿🇦 Южная Африка</option>
+                        <option value="NZ">🇳🇿 Новая Зеландия</option>
+                        <option value="SG">🇸🇬 Сингапур</option>
+                        <option value="HK">🇭🇰 Гонконг</option>
+                        <option value="TH">🇹🇭 Таиланд</option>
+                        <option value="MY">🇲🇾 Малайзия</option>
+                        <option value="ID">🇮🇩 Индонезия</option>
+                        <option value="PH">🇵🇭 Филиппины</option>
+                        <option value="VN">🇻🇳 Вьетнам</option>
+                        <option value="AR">🇦🇷 Аргентина</option>
+                        <option value="CL">🇨🇱 Чили</option>
+                        <option value="CO">🇨🇴 Колумбия</option>
+                        <option value="PE">🇵🇪 Перу</option>
+                        <option value="VE">🇻🇪 Венесуэла</option>
+                        <option value="IL">🇮🇱 Израиль</option>
+                        <option value="SA">🇸🇦 Саудовская Аравия</option>
+                        <option value="AE">🇦🇪 ОАЭ</option>
+                        <option value="KW">🇰🇼 Кувейт</option>
+                        <option value="QA">🇶🇦 Катар</option>
+                        <option value="IR">🇮🇷 Иран</option>
+                        <option value="IQ">🇮🇶 Ирак</option>
+                        <option value="SY">🇸🇾 Сирия</option>
+                        <option value="LB">🇱🇧 Ливан</option>
+                        <option value="JO">🇯🇴 Иордания</option>
+                        <option value="PS">🇵🇸 Палестина</option>
+                        <option value="PK">🇵🇰 Пакистан</option>
+                        <option value="BD">🇧🇩 Бангладеш</option>
+                        <option value="TW">🇹🇼 Тайвань</option>
+                        <option value="UZ">🇺🇿 Узбекистан</option>
+                        <option value="TJ">🇹🇯 Таджикистан</option>
+                        <option value="KG">🇰🇬 Киргизия</option>
+                        <option value="TM">🇹🇲 Туркменистан</option>
+                        <option value="AF">🇦🇫 Афганистан</option>
+                        <option value="CU">🇨🇺 Куба</option>
+                        <option value="DO">🇩🇴 Доминиканская Республика</option>
+                        <option value="PR">🇵🇷 Пуэрто-Рико</option>
+                        <option value="CR">🇨🇷 Коста-Рика</option>
+                        <option value="PA">🇵🇦 Панама</option>
+                        <option value="EC">🇪🇨 Эквадор</option>
+                        <option value="BO">🇧🇴 Боливия</option>
+                        <option value="PY">🇵🇾 Парагвай</option>
+                        <option value="UY">🇺🇾 Уругвай</option>
+                        <option value="KE">🇰🇪 Кения</option>
+                        <option value="GH">🇬🇭 Гана</option>
+                        <option value="CM">🇨🇲 Камерун</option>
+                        <option value="AO">🇦🇴 Ангола</option>
+                        <option value="MZ">🇲🇿 Мозамбик</option>
+                        <option value="TZ">🇹🇿 Танзания</option>
+                        <option value="UG">🇺🇬 Уганда</option>
+                        <option value="ET">🇪🇹 Эфиопия</option>
+                        <option value="RW">🇷🇼 Руанда</option>
+                        <option value="MW">🇲🇼 Малави</option>
+                        <option value="ZM">🇿🇲 Замбия</option>
+                        <option value="ZW">🇿🇼 Зимбабве</option>
+                        <option value="MG">🇲🇬 Мадагаскар</option>
+                        <option value="MA">🇲🇦 Марокко</option>
+                        <option value="DZ">🇩🇿 Алжир</option>
+                        <option value="TN">🇹🇳 Тунис</option>
+                        <option value="SD">🇸🇩 Судан</option>
+                        <option value="LY">🇱🇾 Ливия</option>
+                        <option value="TH">🇹🇭 Таиланд</option>
+                        <option value="MM">🇲🇲 Мьянма</option>
+                        <option value="LA">🇱🇦 Лаос</option>
+                        <option value="KH">🇰🇭 Камбоджа</option>
+                        <option value="BN">🇧🇳 Бруней</option>
+                        <option value="East Timor">🇹🇱 Восточный Тимор</option>
+                        <option value="NP">🇳🇵 Непал</option>
+                        <option value="BT">🇧🇹 Бутан</option>
+                        <option value="LK">🇱🇰 Шри-Ланка</option>
+                        <option value="MV">🇲🇻 Мальдивы</option>
+                        <option value="RU">🇷🇺 Россия</option>
+                    </select>
+                </div>
+
+                <div class="button-wrapper-form">
+                    <button type="button" id="verifyBtn" onclick="verifyAccess()">
+                        <span id="buttonText">Проверить доступ</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="spinner" id="spinner">
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+            </div>
+
+            <div class="message success" id="successMsg"></div>
+            <div class="message error" id="errorMsg"></div>
+
+            <button type="button" class="back-button" onclick="backToMain()">← Назад</button>
+        </div>
+    </div>
+
+    <script>
+        const RU_GROUP_URL = 'https://t.me/+iLu4vTE_r_9kYjNi';
+        const INTL_GROUP_URL = 'https://t.me/+HhAJSQSPCPE0ZDI6';
+
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        function openForm() {
+            document.getElementById('mainScreen').style.display = 'none';
+            document.getElementById('formScreen').style.display = 'block';
+        }
+
+        function backToMain() {
+            document.getElementById('formScreen').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'flex';
+            document.getElementById('accessForm').style.display = 'block';
+            document.getElementById('userName').value = '';
+            document.getElementById('userCountry').value = '';
+            document.getElementById('successMsg').classList.remove('show');
+            document.getElementById('errorMsg').classList.remove('show');
+            document.getElementById('verifyBtn').disabled = false;
+        }
+
+        async function verifyAccess() {
+            const nameInput = document.getElementById('userName').value.trim();
+            const countrySelect = document.getElementById('userCountry').value;
+            const spinner = document.getElementById('spinner');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const buttonText = document.getElementById('buttonText');
+
+            successMsg.classList.remove('show');
+            errorMsg.classList.remove('show');
+
+            if (!nameInput) {
+                errorMsg.textContent = '❌ Пожалуйста, введите ваше имя';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            if (!countrySelect) {
+                errorMsg.textContent = '❌ Пожалуйста, выберите вашу страну';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            spinner.classList.add('show');
+            verifyBtn.disabled = true;
+            buttonText.textContent = 'Проверяю...';
+
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const realCountryCode = data.country_code;
+
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                spinner.classList.remove('show');
+                buttonText.textContent = 'Проверить доступ';
+
+                if (countrySelect === 'RU') {
+                    successMsg.innerHTML = `
+                        <strong>✅ Добро пожаловать, ${nameInput}!</strong><br><br>
+                        <a href="${RU_GROUP_URL}" class="success-link" target="_blank">
+                            Войти в группу →
+                        </a>
+                    `;
+                    successMsg.classList.add('show');
+                    document.getElementById('accessForm').style.display = 'none';
+
+                    setTimeout(() => {
+                        window.location.href = RU_GROUP_URL;
+                    }, 2000);
+                    return;
+                }
+
+                if (countrySelect !== realCountryCode) {
+                    errorMsg.innerHTML = `
+                        <strong>❌ Ошибка верификации</strong><br>
+                        Выбранная вами страна не совпадает с вашим текущим местоположением.
+                    `;
+                    errorMsg.classList.add('show');
+                    verifyBtn.disabled = false;
+                    return;
+                }
+
+                successMsg.innerHTML = `
+                    <strong>✅ Добро пожаловать, ${nameInput}!</strong><br><br>
+                    <a href="${INTL_GROUP_URL}" class="success-link" target="_blank">
+                        Войти в группу →
+                    </a>
+                `;
+                successMsg.classList.add('show');
+                document.getElementById('accessForm').style.display = 'none';
+
+                setTimeout(() => {
+                    window.location.href = INTL_GROUP_URL;
+                }, 2000);
+
+            } catch (error) {
+                spinner.classList.remove('show');
+                buttonText.textContent = 'Проверить доступ';
+                errorMsg.textContent = '⚠️ Ошибка подключения. Попробуйте еще раз.';
+                errorMsg.classList.add('show');
+                verifyBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
