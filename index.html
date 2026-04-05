@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step of Faith</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0d1b3d;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            color: white;
+            position: relative;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(180deg, #0d1b3d 0%, #1a2e5c 30%, #203d70 60%, #0d1b3d 100%);
+            overflow: hidden;
+            animation: bgShift 15s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% {
+                background: linear-gradient(180deg, #0d1b3d 0%, #1a2e5c 30%, #203d70 60%, #0d1b3d 100%);
+            }
+            50% {
+                background: linear-gradient(180deg, #1a2e5c 0%, #203d70 30%, #254a8a 60%, #1a2e5c 100%);
+            }
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            animation: bgMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes bgMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 120%;
+            bottom: 0;
+            left: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="rgba(212,175,55,0.2)"/><stop offset="100" stop-color="rgba(184,134,11,0.1)"/></linearGradient></defs><path d="M0,60 Q150,30 300,60 T600,60 T900,60 T1200,60 L1200,120 L0,120 Z" fill="url(%23g)"/><path d="M0,80 Q200,50 400,80 T800,80 T1200,80 L1200,120 L0,120 Z" fill="rgba(212,175,55,0.1)"/></svg>') repeat-x;
+            animation: wave 12s linear infinite;
+            opacity: 0.6;
+        }
+
+        .wave:nth-child(1) {
+            animation-delay: 0s;
+            opacity: 0.4;
+            animation-duration: 15s;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.2;
+            animation-duration: 18s;
+            bottom: 10px;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(212, 175, 55, 0.6);
+            border-radius: 50%;
+            animation: float 20s infinite;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+        }
+
+        .spinner-inline {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: rgba(212, 175, 55, 0.9);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading {
+            font-size: 18px;
+            color: rgba(212, 175, 55, 0.9);
+        }
+
+        .logo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #d4af37;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ФЛАГ */
+        .flag-container {
+            margin: 40px 0;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .flag {
+            font-size: 180px;
+            line-height: 1;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(212, 175, 55, 0.3));
+            animation: pulse-flag 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-flag {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .flag-logo {
+            width: 200px !important;
+            height: 200px !important;
+            margin: 0 auto 20px !important;
+            border-radius: 15px;
+            filter: drop-shadow(0 15px 40px rgba(212, 175, 55, 0.4));
+            animation: pulse-flag 2s ease-in-out infinite;
+        }
+
+        .country-name {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: #d4af37;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        /* КНОПКА */
+        .button-container {
+            margin-top: 50px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px 40px;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(212,175,55,0.9) 0%, rgba(184,134,11,0.9) 100%);
+            color: #0d1b3d;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 280px;
+            animation: fadeIn 0.8s ease 0.3s backwards;
+            font-family: 'Cinzel', serif;
+        }
+
+        .button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212,175,55,0.4);
+            border-color: #ffd700;
+        }
+
+        .button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .button.blocked {
+            background: linear-gradient(135deg, rgba(244,67,54,0.9) 0%, rgba(211,47,47,0.9) 100%);
+            border-color: #ff5252;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .button.blocked:hover {
+            transform: none;
+            box-shadow: 0 10px 30px rgba(244,67,54,0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+            .flag {
+                font-size: 120px;
+            }
+            .country-name {
+                font-size: 20px;
+            }
+            .button {
+                font-size: 14px;
+                padding: 14px 30px;
+                min-width: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="particles" id="particlesContainer"></div>
+    </div>
+
+    <div class="container">
+        <!-- ЗАГРУЗКА -->
+        <div id="loadingScreen">
+            <p class="loading">
+                <span class="spinner-inline"></span>
+                Определение региона...
+            </p>
+        </div>
+
+        <!-- КОНТЕНТ -->
+        <div id="contentScreen" style="display: none;">
+            <h1 class="title">Step of Faith</h1>
+            
+            <div class="flag-container">
+                <img src="logo.jpg" alt="Step of Faith" class="flag-logo" id="flagLogo" style="display: none;">
+                <div class="flag" id="countryFlag">🌍</div>
+            </div>
+            </div>
+
+            <div class="button-container">
+                <a id="actionButton" href="#" class="button">Загрузка...</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const countryFlags = {
+            'US': '🇺🇸', 'DE': '🇩🇪', 'UA': '🇺🇦', 'BY': '🇧🇾', 'KZ': '🇰🇿',
+            'CA': '🇨🇦', 'GB': '🇬🇧', 'FR': '🇫🇷', 'IT': '🇮🇹', 'ES': '🇪🇸',
+            'NL': '🇳🇱', 'BE': '🇧🇪', 'CH': '🇨🇭', 'AT': '🇦🇹', 'DK': '🇩🇰',
+            'SE': '🇸🇪', 'NO': '🇳🇴', 'FI': '🇫🇮', 'PL': '🇵🇱', 'CZ': '🇨🇿',
+            'SK': '🇸🇰', 'HU': '🇭🇺', 'RO': '🇷🇴', 'BG': '🇧🇬', 'GR': '🇬🇷',
+            'SI': '🇸🇮', 'HR': '🇭🇷', 'LV': '🇱🇻', 'EE': '🇪🇪', 'LT': '🇱🇹',
+            'BA': '🇧🇦', 'RS': '🇷🇸', 'MK': '🇲🇰', 'AL': '🇦🇱', 'ME': '🇲🇪',
+            'TR': '🇹🇷', 'IE': '🇮🇪', 'LU': '🇱🇺', 'MT': '🇲🇹', 'CY': '🇨🇾',
+            'PT': '🇵🇹', 'AU': '🇦🇺', 'JP': '🇯🇵', 'CN': '🇨🇳', 'IN': '🇮🇳',
+            'BR': '🇧🇷', 'MX': '🇲🇽', 'ZA': '🇿🇦', 'NZ': '🇳🇿', 'SG': '🇸🇬',
+            'IL': '🇮🇱', 'RU': '🇷🇺'
+        };
+
+        const countryNames = {
+            'US': 'США', 'DE': 'Германия', 'UA': 'Украина', 'BY': 'Беларусь', 'KZ': 'Казахстан',
+            'CA': 'Канада', 'GB': 'Великобритания', 'FR': 'Франция', 'IT': 'Италия', 'ES': 'Испания',
+            'NL': 'Нидерланды', 'BE': 'Бельгия', 'CH': 'Швейцария', 'AT': 'Австрия', 'DK': 'Дания',
+            'SE': 'Швеция', 'NO': 'Норвегия', 'FI': 'Финляндия', 'PL': 'Польша', 'CZ': 'Чехия',
+            'SK': 'Словакия', 'HU': 'Венгрия', 'RO': 'Румыния', 'BG': 'Болгария', 'GR': 'Греция',
+            'SI': 'Словения', 'HR': 'Хорватия', 'LV': 'Латвия', 'EE': 'Эстония', 'LT': 'Литва',
+            'BA': 'Босния и Герцеговина', 'RS': 'Сербия', 'MK': 'Македония', 'AL': 'Албания', 'ME': 'Черногория',
+            'TR': 'Турция', 'IE': 'Ирландия', 'LU': 'Люксембург', 'MT': 'Мальта', 'CY': 'Кипр',
+            'PT': 'Португалия', 'AU': 'Австралия', 'JP': 'Япония', 'CN': 'Китай', 'IN': 'Индия',
+            'BR': 'Бразилия', 'MX': 'Мексика', 'ZA': 'ЮАР', 'NZ': 'Новая Зеландия', 'SG': 'Сингапур',
+            'IL': 'Израиль', 'RU': 'Россия'
+        };
+
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // WebRTC Leak Detection для обнаружения VPN
+        function detectWebRTC() {
+            return new Promise((resolve) => {
+                try {
+                    const peerConnection = new (window.RTCPeerConnection || window.webkitRTCPeerConnection)({
+                        iceServers: []
+                    });
+
+                    peerConnection.createDataChannel('');
+                    peerConnection.createOffer().then(offer => {
+                        peerConnection.setLocalDescription(offer);
+                    }).catch(() => {});
+
+                    peerConnection.onicecandidate = (ice) => {
+                        if (!ice || !ice.candidate) return;
+                        const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
+                        const ipAddress = ipRegex.exec(ice.candidate.candidate)[1];
+                        resolve(ipAddress);
+                        peerConnection.close();
+                    };
+
+                    setTimeout(() => {
+                        resolve(null);
+                    }, 3000);
+                } catch (error) {
+                    resolve(null);
+                }
+            });
+        }
+
+        async function checkCountry() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const countryCode = data.country_code;
+                const reportedIP = data.ip;
+
+                // Проверка WebRTC leak (для обнаружения VPN)
+                const realIP = await detectWebRTC();
+                
+                // Если разные IP = скорее всего VPN
+                const isVPN = realIP && realIP !== reportedIP;
+
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('contentScreen').style.display = 'block';
+
+                const button = document.getElementById('actionButton');
+
+                // Если Россия или обнаружен VPN
+                if (countryCode === 'RU' || isVPN) {
+                    // Показываем логотип вместо глобуса
+                    document.getElementById('flagLogo').style.display = 'block';
+                    document.getElementById('countryFlag').style.display = 'none';
+                    button.textContent = 'Доступ ограничен';
+                    button.classList.add('blocked');
+                    button.href = '#';
+                    button.onclick = (e) => e.preventDefault();
+                } else {
+                    const flag = countryFlags[countryCode] || '🌍';
+                    
+                    // Показываем флаг, скрываем логотип
+                    document.getElementById('flagLogo').style.display = 'none';
+                    document.getElementById('countryFlag').style.display = 'block';
+                    document.getElementById('countryFlag').textContent = flag;
+                    button.textContent = 'Войти в группу';
+                    button.classList.remove('blocked');
+                    button.href = 'https://t.me/+HhAJSQSPCPE0ZDI6';
+                    button.target = '_blank';
+                }
+            } catch (error) {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('contentScreen').style.display = 'block';
+
+                const button = document.getElementById('actionButton');
+                document.getElementById('flagLogo').style.display = 'none';
+                document.getElementById('countryFlag').style.display = 'block';
+                document.getElementById('countryFlag').textContent = '🌍';
+                button.textContent = 'Войти в группу';
+                button.classList.remove('blocked');
+                button.href = 'https://t.me/+HhAJSQSPCPE0ZDI6';
+                button.target = '_blank';
+            }
+        }
+
+        checkCountry();
+    </script>
+</body>
+</html>
