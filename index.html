@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step of Faith</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0d1b3d;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            color: white;
+            position: relative;
+        }
+
+        .background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            background: linear-gradient(180deg, #0d1b3d 0%, #1a2e5c 30%, #203d70 60%, #0d1b3d 100%);
+            animation: bgShift 15s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { background: linear-gradient(180deg, #0d1b3d 0%, #1a2e5c 30%, #203d70 60%, #0d1b3d 100%); }
+            50% { background: linear-gradient(180deg, #1a2e5c 0%, #203d70 30%, #254a8a 60%, #1a2e5c 100%); }
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            animation: bgMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes bgMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%; height: 120%;
+            bottom: 0; left: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="rgba(212,175,55,0.2)"/><stop offset="100" stop-color="rgba(184,134,11,0.1)"/></linearGradient></defs><path d="M0,60 Q150,30 300,60 T600,60 T900,60 T1200,60 L1200,120 L0,120 Z" fill="url(%23g)"/><path d="M0,80 Q200,50 400,80 T800,80 T1200,80 L1200,120 L0,120 Z" fill="rgba(212,175,55,0.1)"/></svg>') repeat-x;
+            animation: wave 12s linear infinite;
+            opacity: 0.6;
+        }
+
+        .wave:nth-child(1) { animation-delay: 0s; opacity: 0.4; animation-duration: 15s; }
+        .wave:nth-child(2) { animation-delay: -5s; opacity: 0.2; animation-duration: 18s; bottom: 10px; }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(13, 27, 61, 0.8);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #d4af37;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: rgba(212, 175, 55, 0.7);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: rgba(212, 175, 55, 0.9);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(26, 46, 92, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            background: rgba(26, 46, 92, 0.95);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(212, 175, 55, 0.4);
+        }
+
+        .phone-wrapper {
+            display: flex;
+            gap: 0;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(26, 46, 92, 0.8);
+        }
+
+        .code-select {
+            width: 180px;
+            padding: 12px 12px;
+            background: transparent;
+            border: none;
+            border-right: 1px solid rgba(212, 175, 55, 0.3);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-select:focus {
+            outline: none;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .code-select option {
+            background: #0d1b3d;
+            color: white;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 12px 15px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+
+        .phone-input:focus {
+            outline: none;
+        }
+
+        .phone-input::placeholder {
+            color: rgba(212, 175, 55, 0.4);
+        }
+
+        .phone-wrapper:focus-within {
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px 30px;
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(212,175,55,0.9) 0%, rgba(184,134,11,0.9) 100%);
+            color: #0d1b3d;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212,175,55,0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                max-width: 95vw;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .subtitle {
+                font-size: 12px;
+            }
+            .code-select {
+                width: 140px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="title">Step of Faith</h1>
+        <p class="subtitle">Присоединитесь к нашей молитвенной группе</p>
+
+        <form id="registrationForm">
+            <!-- ИМЯ -->
+            <div class="form-group">
+                <label class="form-label">Ваше имя</label>
+                <input type="text" id="nameInput" class="form-input" placeholder="Введите ваше имя" required>
+                <div class="error-message" id="nameError">Введите имя</div>
+            </div>
+
+            <!-- НОМЕР ТЕЛЕФОНА (КОД + НОМЕР) -->
+            <div class="form-group">
+                <label class="form-label">Номер телефона</label>
+                <div class="phone-wrapper">
+                    <select id="countrySelect" class="code-select" required>
+                        <option value="">Выберите код</option>
+                        <option value="DE|49">+49 🇩🇪 Германия</option>
+                        <option value="UA|380">+380 🇺🇦 Украина</option>
+                        <option value="BY|375">+375 🇧🇾 Беларусь</option>
+                        <option value="GB|44">+44 🇬🇧 Англия</option>
+                        <option value="FR|33">+33 🇫🇷 Франция</option>
+                        <option value="IT|39">+39 🇮🇹 Италия</option>
+                        <option value="ES|34">+34 🇪🇸 Испания</option>
+                        <option value="NL|31">+31 🇳🇱 Нидерланды</option>
+                        <option value="BE|32">+32 🇧🇪 Бельгия</option>
+                        <option value="AT|43">+43 🇦🇹 Австрия</option>
+                        <option value="PL|48">+48 🇵🇱 Польша</option>
+                        <option value="CZ|420">+420 🇨🇿 Чехия</option>
+                        <option value="SK|421">+421 🇸🇰 Словакия</option>
+                        <option value="HU|36">+36 🇭🇺 Венгрия</option>
+                        <option value="RO|40">+40 🇷🇴 Румыния</option>
+                        <option value="BG|359">+359 🇧🇬 Болгария</option>
+                        <option value="GR|30">+30 🇬🇷 Греция</option>
+                        <option value="PT|351">+351 🇵🇹 Португалия</option>
+                        <option value="IE|353">+353 🇮🇪 Ирландия</option>
+                        <option value="SE|46">+46 🇸🇪 Швеция</option>
+                        <option value="NO|47">+47 🇳🇴 Норвегия</option>
+                        <option value="FI|358">+358 🇫🇮 Финляндия</option>
+                        <option value="DK|45">+45 🇩🇰 Дания</option>
+                        <option value="LU|352">+352 🇱🇺 Люксембург</option>
+                        <option value="CH|41">+41 🇨🇭 Швейцария</option>
+                        <option value="CY|357">+357 🇨🇾 Кипр</option>
+                        <option value="MT|356">+356 🇲🇹 Мальта</option>
+                        <option value="HR|385">+385 🇭🇷 Хорватия</option>
+                        <option value="SI|386">+386 🇸🇮 Словения</option>
+                        <option value="LV|371">+371 🇱🇻 Латвия</option>
+                        <option value="EE|372">+372 🇪🇪 Эстония</option>
+                        <option value="LT|370">+370 🇱🇹 Литва</option>
+                        <option value="RU|7">+7 🇷🇺 Россия</option>
+                        <option value="KZ|7">+7 🇰🇿 Казахстан</option>
+                        <option value="GE|995">+995 🇬🇪 Грузия</option>
+                        <option value="MD|373">+373 🇲🇩 Молдавия</option>
+                        <option value="UZ|998">+998 🇺🇿 Узбекистан</option>
+                        <option value="TJ|992">+992 🇹🇯 Таджикистан</option>
+                        <option value="KG|996">+996 🇰🇬 Киргизия</option>
+                        <option value="TK|993">+993 🇹🇲 Туркменистан</option>
+                        <option value="BA|387">+387 🇧🇦 Босния</option>
+                        <option value="RS|381">+381 🇷🇸 Сербия</option>
+                        <option value="MK|389">+389 🇲🇰 Македония</option>
+                        <option value="AL|355">+355 🇦🇱 Албания</option>
+                        <option value="ME|382">+382 🇲🇪 Черногория</option>
+                        <option value="XK|383">+383 🇽🇰 Косово</option>
+                        <option value="US|1">+1 🇺🇸 США</option>
+                        <option value="CA|1">+1 🇨🇦 Канада</option>
+                        <option value="MX|52">+52 🇲🇽 Мексика</option>
+                        <option value="BR|55">+55 🇧🇷 Бразилия</option>
+                        <option value="AR|54">+54 🇦🇷 Аргентина</option>
+                        <option value="CL|56">+56 🇨🇱 Чили</option>
+                        <option value="CO|57">+57 🇨🇴 Колумбия</option>
+                        <option value="PE|51">+51 🇵🇪 Перу</option>
+                        <option value="EC|593">+593 🇪🇨 Эквадор</option>
+                        <option value="VE|58">+58 🇻🇪 Венесуэла</option>
+                        <option value="UY|598">+598 🇺🇾 Уругвай</option>
+                        <option value="PY|595">+595 🇵🇾 Парагвай</option>
+                        <option value="BO|591">+591 🇧🇴 Боливия</option>
+                        <option value="TR|90">+90 🇹🇷 Турция</option>
+                        <option value="IL|972">+972 🇮🇱 Израиль</option>
+                        <option value="SA|966">+966 🇸🇦 Саудовская Аравия</option>
+                        <option value="AE|971">+971 🇦🇪 ОАЭ</option>
+                        <option value="QA|974">+974 🇶🇦 Катар</option>
+                        <option value="KW|965">+965 🇰🇼 Кувейт</option>
+                        <option value="BH|973">+973 🇧🇭 Бахрейн</option>
+                        <option value="OM|968">+968 🇴🇲 Оман</option>
+                        <option value="YE|967">+967 🇾🇪 Йемен</option>
+                        <option value="JO|962">+962 🇯🇴 Иордания</option>
+                        <option value="LB|961">+961 🇱🇧 Ливан</option>
+                        <option value="SY|963">+963 🇸🇾 Сирия</option>
+                        <option value="IQ|964">+964 🇮🇶 Ирак</option>
+                        <option value="IR|98">+98 🇮🇷 Иран</option>
+                        <option value="AF|93">+93 🇦🇫 Афганистан</option>
+                        <option value="PK|92">+92 🇵🇰 Пакистан</option>
+                        <option value="IN|91">+91 🇮🇳 Индия</option>
+                        <option value="BD|880">+880 🇧🇩 Бангладеш</option>
+                        <option value="NP|977">+977 🇳🇵 Непал</option>
+                        <option value="BT|975">+975 🇧🇹 Бутан</option>
+                        <option value="LK|94">+94 🇱🇰 Шри-Ланка</option>
+                        <option value="MM|95">+95 🇲🇲 Мьянма</option>
+                        <option value="TH|66">+66 🇹🇭 Таиланд</option>
+                        <option value="LA|856">+856 🇱🇦 Лаос</option>
+                        <option value="KH|855">+855 🇰🇭 Камбоджа</option>
+                        <option value="VN|84">+84 🇻🇳 Вьетнам</option>
+                        <option value="MY|60">+60 🇲🇾 Малайзия</option>
+                        <option value="SG|65">+65 🇸🇬 Сингапур</option>
+                        <option value="ID|62">+62 🇮🇩 Индонезия</option>
+                        <option value="PH|63">+63 🇵🇭 Филиппины</option>
+                        <option value="JP|81">+81 🇯🇵 Япония</option>
+                        <option value="KR|82">+82 🇰🇷 Южная Корея</option>
+                        <option value="CN|86">+86 🇨🇳 Китай</option>
+                        <option value="TW|886">+886 🇹🇼 Тайвань</option>
+                        <option value="HK|852">+852 🇭🇰 Гонконг</option>
+                        <option value="MO|853">+853 🇲🇴 Макао</option>
+                        <option value="AU|61">+61 🇦🇺 Австралия</option>
+                        <option value="NZ|64">+64 🇳🇿 Новая Зеландия</option>
+                        <option value="DZ|213">+213 🇩🇿 Алжир</option>
+                        <option value="TN|216">+216 🇹🇳 Тунис</option>
+                        <option value="MA|212">+212 🇲🇦 Марокко</option>
+                        <option value="LY|218">+218 🇱🇾 Ливия</option>
+                        <option value="SD|249">+249 🇸🇩 Судан</option>
+                        <option value="ET|251">+251 🇪🇹 Эфиопия</option>
+                        <option value="KE|254">+254 🇰🇪 Кения</option>
+                        <option value="GH|233">+233 🇬🇭 Гана</option>
+                        <option value="NG|234">+234 🇳🇬 Нигерия</option>
+                        <option value="CM|237">+237 🇨🇲 Камерун</option>
+                        <option value="CI|225">+225 🇨🇮 Кот-д'Ивуар</option>
+                        <option value="SN|221">+221 🇸🇳 Сенегал</option>
+                        <option value="MZ|258">+258 🇲🇿 Мозамбик</option>
+                        <option value="ZA|27">+27 🇿🇦 ЮАР</option>
+                        <option value="ZW|263">+263 🇿🇼 Зимбабве</option>
+                        <option value="ZM|260">+260 🇿🇲 Замбия</option>
+                        <option value="BW|267">+267 🇧🇼 Ботсвана</option>
+                        <option value="NA|264">+264 🇳🇦 Намибия</option>
+                        <option value="AO|244">+244 🇦🇴 Ангола</option>
+                        <option value="MW|265">+265 🇲🇼 Малави</option>
+                        <option value="MG|261">+261 🇲🇬 Мадагаскар</option>
+                        <option value="MU|230">+230 🇲🇺 Маврикий</option>
+                        <option value="SC|248">+248 🇸🇨 Сейшелы</option>
+                        <option value="FJ|679">+679 🇫🇯 Фиджи</option>
+                        <option value="PG|675">+675 🇵🇬 ПНГ</option>
+                        <option value="VU|678">+678 🇻🇺 Вануату</option>
+                        <option value="WS|685">+685 🇼🇸 Самоа</option>
+                        <option value="TO|676">+676 🇹🇴 Тонга</option>
+                        <option value="KI|686">+686 🇰🇮 Кирибати</option>
+                        <option value="MH|692">+692 🇲🇭 Маршаллы</option>
+                        <option value="FM|691">+691 🇫🇲 Микронезия</option>
+                        <option value="PW|680">+680 🇵🇼 Палау</option>
+                        <option value="IS|354">+354 🇮🇸 Исландия</option>
+                        <option value="SV|503">+503 🇸🇻 Сальвадор</option>
+                        <option value="HN|504">+504 🇭🇳 Гондурас</option>
+                        <option value="CR|506">+506 🇨🇷 Коста-Рика</option>
+                        <option value="PA|507">+507 🇵🇦 Панама</option>
+                        <option value="BZ|501">+501 🇧🇿 Белиз</option>
+                        <option value="GT|502">+502 🇬🇹 Гватемала</option>
+                        <option value="NI|505">+505 🇳🇮 Никарагуа</option>
+                        <option value="CU|53">+53 🇨🇺 Куба</option>
+                        <option value="DO|1">+1 🇩🇴 ДР</option>
+                        <option value="JM|1">+1 🇯🇲 Ямайка</option>
+                        <option value="HT|509">+509 🇭🇹 Гаити</option>
+                        <option value="TT|1">+1 🇹🇹 Тринидад</option>
+                    </select>
+                    <input type="tel" id="phoneInput" class="phone-input" placeholder="123456789" required>
+                </div>
+                <div class="error-message" id="phoneError">Выберите код и введите номер</div>
+            </div>
+
+            <button type="submit" class="submit-button">Присоединиться к группе</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const nameInput = document.getElementById('nameInput');
+        const countrySelect = document.getElementById('countrySelect');
+        const phoneInput = document.getElementById('phoneInput');
+
+        const GROUPS = {
+            'RU': 'https://t.me/+iLu4vTE_r_9kYjNi',
+            'OTHER': 'https://t.me/+VmWPEFGTGTw0ZTJi'
+        };
+
+        const PHONE_FORMATS = {
+            'DE': {min: 9, max: 11}, 'GB': {min: 10, max: 11}, 'UA': {min: 9, max: 9},
+            'BY': {min: 9, max: 9}, 'RU': {min: 10, max: 10}, 'US': {min: 10, max: 10},
+            'CA': {min: 10, max: 10}, 'MX': {min: 10, max: 10}, 'FR': {min: 9, max: 9},
+            'IT': {min: 9, max: 10}, 'ES': {min: 9, max: 9}, 'NL': {min: 9, max: 9},
+            'BE': {min: 9, max: 9}, 'CH': {min: 9, max: 9}, 'AT': {min: 9, max: 13},
+            'PL': {min: 9, max: 9}, 'CZ': {min: 9, max: 9}, 'SK': {min: 9, max: 9},
+            'HU': {min: 9, max: 9}, 'RO': {min: 9, max: 9}, 'BG': {min: 9, max: 9},
+            'GR': {min: 9, max: 9}, 'PT': {min: 9, max: 9}, 'IE': {min: 9, max: 9},
+            'SE': {min: 7, max: 9}, 'NO': {min: 8, max: 8}, 'FI': {min: 8, max: 12},
+            'DK': {min: 8, max: 8}, 'KZ': {min: 10, max: 10}, 'GE': {min: 9, max: 9},
+            'TR': {min: 10, max: 10}, 'IL': {min: 9, max: 9}, 'JP': {min: 9, max: 10},
+            'CN': {min: 10, max: 11}, 'IN': {min: 10, max: 10}, 'BR': {min: 10, max: 11},
+            'AR': {min: 10, max: 10}, 'CL': {min: 9, max: 9}, 'CO': {min: 10, max: 10},
+            'PE': {min: 9, max: 9}, 'AU': {min: 9, max: 9}, 'NZ': {min: 9, max: 9},
+            'ZA': {min: 9, max: 9}, 'EG': {min: 10, max: 10}, 'NG': {min: 10, max: 10},
+            'KE': {min: 9, max: 9}, 'SG': {min: 8, max: 8}, 'MY': {min: 9, max: 10},
+            'TH': {min: 9, max: 9}, 'ID': {min: 9, max: 12}, 'PH': {min: 10, max: 10},
+            'VN': {min: 9, max: 9}, 'KR': {min: 9, max: 11}
+        };
+
+        function validatePhoneNumber(countryCode, phoneNumber) {
+            const digits = phoneNumber.replace(/\D/g, '');
+            const format = PHONE_FORMATS[countryCode];
+            if (!format) return {valid: true, message: ''};
+            if (digits.length < format.min) return {valid: false, message: `❌ Мин ${format.min} цифр`};
+            if (digits.length > format.max) return {valid: false, message: `❌ Макс ${format.max} цифр`};
+            return {valid: true, message: ''};
+        }
+
+        function validateForm() {
+            let isValid = true;
+            if (nameInput.value.trim().length < 2) {
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.remove('show');
+            }
+
+            if (!countrySelect.value || phoneInput.value.trim().length < 5) {
+                document.getElementById('phoneError').classList.add('show');
+                document.getElementById('phoneError').textContent = 'Выберите код и введите номер';
+                isValid = false;
+            } else {
+                const [countryCode] = countrySelect.value.split('|');
+                const validation = validatePhoneNumber(countryCode, phoneInput.value.trim());
+                if (!validation.valid) {
+                    document.getElementById('phoneError').classList.add('show');
+                    document.getElementById('phoneError').textContent = validation.message;
+                    isValid = false;
+                } else {
+                    document.getElementById('phoneError').classList.remove('show');
+                }
+            }
+            return isValid;
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            const name = nameInput.value.trim();
+            const [countryCode, phoneCode] = countrySelect.value.split('|');
+            const phone = phoneInput.value.trim();
+
+            let groupLink = countryCode === 'RU' ? GROUPS.RU : GROUPS.OTHER;
+            setTimeout(() => {
+                window.location.href = groupLink;
+            }, 500);
+        });
+
+        nameInput.addEventListener('input', () => {
+            if (nameInput.value.trim().length >= 2) {
+                document.getElementById('nameError').classList.remove('show');
+            }
+        });
+
+        countrySelect.addEventListener('change', () => {
+            if (countrySelect.value && phoneInput.value.trim().length >= 5) {
+                const [countryCode] = countrySelect.value.split('|');
+                const validation = validatePhoneNumber(countryCode, phoneInput.value.trim());
+                if (validation.valid) {
+                    document.getElementById('phoneError').classList.remove('show');
+                }
+            }
+        });
+
+        phoneInput.addEventListener('input', () => {
+            if (countrySelect.value && phoneInput.value.trim().length >= 5) {
+                const [countryCode] = countrySelect.value.split('|');
+                const validation = validatePhoneNumber(countryCode, phoneInput.value.trim());
+                if (validation.valid) {
+                    document.getElementById('phoneError').classList.remove('show');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
