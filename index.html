@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step of Faith</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+      padding: 20px;
+    }
+
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 34px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 18px;
+      color: #d1d5db;
+      margin-top: 6px;
+    }
+
+    .desc {
+      text-align: center;
+      font-size: 15px;
+      color: #9ca3af;
+      margin: 18px 0 24px;
+    }
+
+    .label {
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    input, select, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+    }
+
+    input, select {
+      background: white;
+      color: black;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #d4af6a;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .error {
+      display: none;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #fca5a5;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255,255,255,0.18);
+      border-top: 4px solid #d4af6a;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="form">
+      <div class="title">Step of Faith</div>
+      <div class="subtitle">Шаг веры</div>
+      <div class="desc">Registration / Регистрация в группу</div>
+
+      <div class="label">Name / Имя</div>
+      <input id="name" />
+
+      <div class="label">Country / Страна</div>
+      <select id="country" onchange="setCode()">
+        <option value="">---</option>
+
+        <option value="+49" data-len="11">Germany / Германия</option>
+        <option value="+380" data-len="12">Ukraine / Украина</option>
+        <option value="+44" data-len="10">England / Англия</option>
+        <option value="+1" data-len="10">United States / США</option>
+        <option value="+34" data-len="9">Spain / Испания</option>
+        <option value="+39" data-len="10">Italy / Италия</option>
+        <option value="+375" data-len="12">Belarus / Беларусь</option>
+        <option value="+48" data-len="9">Poland / Польша</option>
+        <option value="+33" data-len="11">France / Франция</option>
+        <option value="+31" data-len="11">Netherlands / Нидерланды</option>
+        <option value="+41" data-len="11">Switzerland / Швейцария</option>
+        <option value="+43" data-len="11">Austria / Австрия</option>
+        <option value="+420" data-len="12">Czech Republic / Чехия</option>
+        <option value="+421" data-len="12">Slovakia / Словакия</option>
+        <option value="+36" data-len="11">Hungary / Венгрия</option>
+        <option value="+40" data-len="11">Romania / Румыния</option>
+        <option value="+359" data-len="12">Bulgaria / Болгария</option>
+        <option value="+385" data-len="11">Croatia / Хорватия</option>
+        <option value="+386" data-len="11">Slovenia / Словения</option>
+        <option value="+381" data-len="12">Serbia / Сербия</option>
+        <option value="+382" data-len="11">Montenegro / Черногория</option>
+        <option value="+389" data-len="11">North Macedonia / Северная Македония</option>
+        <option value="+30" data-len="12">Greece / Греция</option>
+        <option value="+351" data-len="12">Portugal / Португалия</option>
+        <option value="+45" data-len="10">Denmark / Дания</option>
+        <option value="+46" data-len="10">Sweden / Швеция</option>
+        <option value="+47" data-len="10">Norway / Норвегия</option>
+        <option value="+358" data-len="12">Finland / Финляндия</option>
+        <option value="+353" data-len="12">Ireland / Ирландия</option>
+        <option value="+995" data-len="12">Georgia / Грузия</option>
+        <option value="+374" data-len="11">Armenia / Армения</option>
+        <option value="+1" data-len="10">Canada / Канада</option>
+
+        <option value="other" data-len="6">Other country / Другая страна</option>
+      </select>
+
+      <div class="label">Phone / Телефон</div>
+      <input id="phone" inputmode="tel" />
+      <div class="note">Если выбрана страна из списка, код подставляется автоматически</div>
+      <div class="error" id="error"></div>
+
+      <button id="submitBtn" onclick="submitForm()">Добавиться в группу</button>
+    </div>
+
+    <div class="success" id="success">
+      <div class="spinner"></div>
+      <div style="font-size: 22px; font-weight: bold; margin-bottom: 10px;">
+        Ваша заявка отправлена
+      </div>
+      <div style="color:#cbd5e1;">
+        Пожалуйста, ожидайте решения администратора
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    function clean(value) {
+      return value.replace(/[^\d+]/g, '');
+    }
+
+    function setCode() {
+      const country = document.getElementById('country');
+      const phone = document.getElementById('phone');
+      const code = country.value;
+
+      if (!code) return;
+
+      if (code === 'other') {
+        phone.value = '';
+        phone.placeholder = '+___ ___ ___';
+        return;
+      }
+
+      phone.value = code + ' ';
+      phone.placeholder = '';
+    }
+
+    function validatePhone() {
+      const country = document.getElementById('country');
+      const code = country.value;
+      const len = parseInt(country.options[country.selectedIndex]?.dataset.len || '0', 10);
+      const phone = clean(document.getElementById('phone').value);
+      const error = document.getElementById('error');
+
+      if (!code) {
+        error.innerText = 'Выберите страну';
+        error.style.display = 'block';
+        return false;
+      }
+
+      if (code === 'other') {
+        if (!phone.startsWith('+') || phone.replace(/\D/g, '').length < len) {
+          error.innerText = 'Введите номер в международном формате';
+          error.style.display = 'block';
+          return false;
+        }
+        error.style.display = 'none';
+        return true;
+      }
+
+      if (!phone.startsWith(code)) {
+        error.innerText = 'Номер должен начинаться с ' + code;
+        error.style.display = 'block';
+        return false;
+      }
+
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length < len) {
+        error.innerText = 'Неверная длина номера';
+        error.style.display = 'block';
+        return false;
+      }
+
+      error.style.display = 'none';
+      return true;
+    }
+
+    async function submitForm() {
+      const name = document.getElementById('name').value.trim();
+      const country = document.getElementById('country');
+      const phone = clean(document.getElementById('phone').value);
+      const btn = document.getElementById('submitBtn');
+
+      if (!name || !country.value || !phone) {
+        alert('Заполните все поля');
+        return;
+      }
+
+      if (!validatePhone()) return;
+
+      const user = tg?.initDataUnsafe?.user;
+      if (!user?.id) {
+        alert('Откройте форму внутри Telegram');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Отправка...';
+
+      try {
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            name,
+            country: country.options[country.selectedIndex].text,
+            phone,
+            telegram_id: user.id || null,
+            username: user.username || null,
+            telegram_first_name: user.first_name || '',
+            telegram_last_name: user.last_name || ''
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || 'Ошибка отправки');
+        }
+
+        document.getElementById('form').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+
+        setTimeout(() => {
+          window.location.href = result.joinLink || 'https://t.me/';
+        }, 1800);
+      } catch (e) {
+        alert(e.message || 'Ошибка');
+        btn.disabled = false;
+        btn.textContent = 'Добавиться в группу';
+      }
+    }
+  </script>
+</body>
+</html>
